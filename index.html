@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!-- Use the Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Define a clean, professional color palette */
+            --color-primary: #1e3a8a; /* Deep Blue */
+            --color-secondary: #3b82f6; /* Bright Blue Accent */
+            --color-background: #f8fafc; /* Light Gray/Off-White */
+            --color-text: #1f2937; /* Dark Gray */
+            --color-card-bg: #ffffff; /* White */
+            --color-light-gray: #e5e7eb; /* Subtle Border/Divider */
+            --color-hover: #172554;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            scroll-behavior: smooth;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .button-primary {
+            background-color: var(--color-primary);
+            color: white;
+            border: 2px solid var(--color-primary);
+        }
+
+        .button-secondary {
+            background-color: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .button-primary:hover {
+            background-color: var(--color-hover);
+            border-color: var(--color-hover);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--color-primary);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--color-card-bg);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Button (Hamburger) */
+        .menu-button {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .menu-button span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--color-primary);
+            border-radius: 1px;
+            transition: all 0.3s linear;
+        }
+
+        /* Mobile Navigation Overlay */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 60px; /* Below header */
+                left: 0;
+                width: 100%;
+                height: 0;
+                overflow: hidden;
+                flex-direction: column;
+                background-color: var(--color-card-bg);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                transition: height 0.3s ease-in-out;
+            }
+
+            .nav-links.open {
+                height: auto; /* Will be set via JS for smooth transition */
+                padding-bottom: 1rem;
+            }
+            
+            .nav-links a {
+                padding: 1rem 1.5rem;
+                border-bottom: 1px solid var(--color-light-gray);
+            }
+            
+            .menu-button {
+                display: flex;
+            }
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 4rem 0;
+            min-height: 80vh;
+        }
+
+        /* --- Hero Section (Page 1) --- */
+        #hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100vh;
+            background-color: var(--color-background);
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+        }
+
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 0px -14px;
+            margin-bottom: 2rem;
+            border: 6px solid var(--color-primary);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--color-primary);
+            line-height: 1;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        /* Mobile specific adjustments for Hero */
+        @media (max-width: 640px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            .profile-photo {
+                width: 170px;
+                height: 170px;
+            }
+        }
+
+        /* --- About Me Section (Page 2) --- */
+        #about-me .content-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding-top: 1rem;
+        }
+        
+        #about-me .goal-card {
+            background-color: var(--color-card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid var(--color-secondary);
+        }
+
+        #about-me .goal-card h3 {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Achievements Section (Page 3) --- */
+        #achievements .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .achievement-card {
+            background-color: var(--color-card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .achievement-card h3 {
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-card small {
+            display: block;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-style: italic;
+            border-bottom: 1px dashed var(--color-light-gray);
+            padding-bottom: 0.5rem;
+        }
+        
+        .achievement-card p {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+
+        .cert-link {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .cert-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Projects Section (Page 4) --- */
+        .project-item {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-card-bg);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .project-item:nth-child(even) {
+            background-color: #f0f4f8; /* Slightly different background for visual separation */
+        }
+
+        /* Updated Project Image Styling */
+        .project-image {
+            width: 50%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            background-color: var(--color-light-gray);
+        }
+
+        .project-details {
+            padding: 1.5rem;
+        }
+
+        .project-details h3 {
+            font-size: 1.75rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-tags span {
+            display: inline-block;
+            background-color: var(--color-secondary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .project-link {
+            margin-top: 1rem;
+        }
+        
+        /* Desktop/Tablet - Side by Side Layout */
+        @media (min-width: 768px) {
+            .project-item {
+                flex-direction: row;
+            }
+            
+            .project-item:nth-child(even) {
+                flex-direction: row-reverse; /* Swap image and details for alternating design */
+            }
+
+            .project-image,
+            .project-details {
+                flex: 1;
+            }
+            
+            /* Make image full height in flex container */
+            .project-image {
+                height: auto; 
+                min-height: 300px;
+            }
+        }
+
+
+        /* --- Skills Section (Page 5) --- */
+        #skills .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding-top: 1rem;
+        }
+
+        .skill-group {
+            background-color: var(--color-card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .skill-group h3 {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--color-light-gray);
+            padding-bottom: 0.5rem;
+        }
+
+        .skill-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .skill-list li {
+            background-color: #e0f2fe; /* Light blue background */
+            color: var(--color-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        
+        .skill-list li:hover {
+            background-color: #bae6fd;
+        }
+
+
+        /* --- Contact Section (Page 6) --- */
+        #contact .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding-top: 1rem;
+        }
+
+        .contact-card {
+            background-color: var(--color-card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            border-top: 4px solid var(--color-secondary);
+        }
+
+        .contact-card h4 {
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card a {
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            word-break: break-all;
+        }
+        
+        .contact-card a:hover {
+            color: var(--color-secondary);
+            text-decoration: underline;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--color-primary);
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <a href="#hero" class="logo">Natnael Tassew</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="#about-me">About</a>
+                <a href="#achievements">Achievements</a>
+                <a href="#projects">Projects</a>
+                <a href="#skills">Skills</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="menu-button" id="menuButton" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Page 1: Hero Section -->
+        <section id="hero">
+            <div class="hero-content">
+                <!-- IMPORTANT: Save  photo as 'my-photo.jpg' in the same folder -->
+                <img src="my-photo.jpg" 
+                     alt="Professional profile photo of natnael tassew" 
+                     class="profile-photo">
+
+                <h1>Hi, I’m Natnael Tassew</h1>
+                <p>Aspiring **Software Engineering** Student</p>
+                <p></p>
+
+                <!-- Short introduction -->
+                <p style="margin-top: 2rem; max-width: 600px; font-size: 1.1rem; color: #4b5563;">
+                    I am a dedicated student with a passion for algorithms and problem-solving, aiming to leverage Russian academic excellence in Computer Science. My goal is to build intelligent systems that address complex global challenges.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#projects" class="button button-primary">View My Projects</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 2: About Me -->
+        <section id="about-me" class="container">
+            <h2>About Me</h2>
+            <div class="content-flex">
+                <div class="goal-card">
+                <p>
+                    My name is Natnael Tassew, and I am a 19-year-old Grade 12 student at Abyot Kirs Secondary School in Addis Ababa, Ethiopia. I was born in Bahir Dar and grew up with two brothers. From a young age, I developed a strong interest in technology. My mother introduced me to fixing simple devices such as chargers, sockets, and phones, and later taught me how to use a computer. That moment sparked my passion for technology and motivated me to learn more.
+
+                    As I grew older, I actively participated in ICT activities at school and continued exploring the field during my free time. At the age of 12, I began learning fundamental computer skills, and over the years I expanded my knowledge into areas such as Python programming, Windows and Linux systems, HTML, CSS, and basic cybersecurity. My favourite subjects in school are Information Technology and Mathematics.
+
+                    I enjoy using my free time to learn new skills, which has helped me earn several certificates. These include three certificates in IT, AI Fundamentals, and Programming Fundamentals from Udacity, an advanced Python programming certificate from FreeCodeCamp, a theology certificate from the Ethiopian Orthodox Church, and a Grade 9 academic excellence certificate for ranking 3rd in my class.
+                </p>
+                </div>
+                <div class="goal-card">
+                    <h3>Why I Want to Study in Russia</h3>
+                    <!--  -->
+                    <p>
+                        The Russian Federation's history of pioneering achievements in theoretical computer science and mathematics is unparalleled. Institutions like RUDN University  offer a depth of curriculum, particularly in fields like artificial intelligence and numerical methods, that perfectly aligns with my specialized interests. I seek an environment where academic rigor is the standard, allowing me to engage with world-class faculty and a diverse, driven peer group.
+                    </p>
+                </div>
+
+                <div class="goal-card">
+                    <h3>My Academic Goals</h3>
+                    <!--  -->
+                    <p>
+                        My primary goal is to specialize in **Machine Learning and Data Science**. I plan to complete a Master's degree focused on building **explainable AI models**. Beyond graduation, I aim to contribute to a multinational research team, using my skills to develop sustainable technological solutions, thereby fostering stronger international scientific collaboration.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 3: Achievements -->
+        <section id="achievements" class="container">
+            <h2>Achievements & Awards</h2>
+            <div class="grid-container">
+                
+                <div class="achievement-card">
+                    <h3>AI Fundamentals Nanodegree</h3>
+                    <small>Date: November 2025</small>
+                    <p>Verified Nanodegree by Udacity (Accenture). Gained foundational knowledge in AI and machine learning practical applications.</p>
+                    <a href="https://www.udacity.com/certificate/e/87f4894a-b5b2-11f0-8f4c-4f6e0a119fc7" target="_blank" class="cert-link">View Certificate →</a>
+                </div>
+
+                <div class="achievement-card">
+                    <h3>Programming Fundamentals Nanodegree</h3>
+                    <small>Date: December 2024</small>
+                    <p>Verified Nanodegree by Udacity (Accenture). Mastered core programming concepts, including data structures and algorithms.</p>
+                    <a href="https://www.udacity.com/certificate/e/e6a98e78-6c1a-11ef-af14-f79a07bd6e4f" target="_blank" class="cert-link">View Certificate →</a>
+                </div>
+
+                <div class="achievement-card">
+                    <h3>Scientific Computing with Python</h3>
+                    <small>Date: Verified Certification</small>
+                    <p>Awarded by FreeCodeCamp for completing 300 hours of coursework, including 5 complex algorithms projects in Python.</p>
+                    <a href="https://www.freecodecamp.org/certification/natnaelman09/scientific-computing-with-python-v7" target="_blank" class="cert-link">View Certificate →</a>
+                </div>
+
+                <div class="achievement-card">
+                    <h3>Theology Certificate</h3>
+                    <small>Date: October 2025</small>
+                    <p>Completed a comprehensive two-year curriculum (Oct 2023 - Oct 2025) at the Ethiopian Orthodox Tewahedo Church, demonstrating long-term dedication and discipline.</p>
+                    <a href="theology-certificate.jpg" target="_blank" class="cert-link">View Certificate →</a>
+                </div>
+
+                <div class="achievement-card">
+                    <h3>Grade 9 Academic Excellence</h3>
+                    <small>Date: July 2023</small>
+                    <p>Awarded 3rd Rank for outstanding academic performance at Fana 02 Secondary School, Addis Ababa.</p>
+                    <a href="high-school-certificate.jpg" target="_blank" class="cert-link">View Certificate →</a>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- Page 4: Projects -->
+        <section id="projects" class="container">
+            <h2>My Projects</h2>
+            
+            <div class="project-item">
+                <!-- IMPORTANT: Save photo as 'project-1.jpg' -->
+                <img src="project-1.jpg" alt="Probability Calculator Screenshot" class="project-image">
+                <div class="project-details">
+                    <h3>Probability Calculator</h3>
+                    <p>A Python program that estimates probabilities by running a large number of simulated experiments. It determines the likelihood of drawing specific balls from a hat.</p>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>Object Oriented Programming</span>
+                        <span>Probability</span>
+                    </div>
+                    <a href="https://github.com/natnaeltassew/Probability-calculator-" target="_blank" class="button button-secondary project-link">View on GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <!-- IMPORTANT: Save photo as 'project-2.jpg' -->
+                <img src="project-2.jpg" alt="Polygon Area Calculator Screenshot" class="project-image">
+                <div class="project-details">
+                    <h3>Polygon Area Calculator</h3>
+                    <p>An object-oriented Python program that defines Rectangle and Square classes. It allows users to calculate area, perimeter, and the number of times one shape fits inside another.</p>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>Inheritance</span>
+                        <span>Geometry Logic</span>
+                    </div>
+                    <a href="https://github.com/natnaeltassew/Polygon-calculator-" target="_blank" class="button button-secondary project-link">View on GitHub</a>
+                </div>
+            </div>
+            
+            <div class="project-item">
+                <!-- IMPORTANT: Save photo as 'project-3.jpg' -->
+                <img src="project-3.jpg" alt="Budget App Screenshot" class="project-image">
+                <div class="project-details">
+                    <h3>Budget App</h3>
+                    <p>A class-based budget management system. It handles deposits, withdrawals, and category balances, and prints a formatted spend chart showing percentage spent by category.</p>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>Data Structures</span>
+                        <span>String Formatting</span>
+                    </div>
+                    <a href="https://github.com/natnaeltassew/Budget-app" target="_blank" class="button button-secondary project-link">View on GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <!-- IMPORTANT: Save photo as 'project-4.jpg' -->
+                <img src="project-4.jpg" alt="Time Calculator Screenshot" class="project-image">
+                <div class="project-details">
+                    <h3>Time Calculator</h3>
+                    <p>A smart time addition tool. It takes a start time and a duration, accurately calculating the resulting time, day of the week, and number of days passed.</p>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>Time Logic</span>
+                        <span>Algorithms</span>
+                    </div>
+                    <a href="https://github.com/natnaeltassew/Time_calculator" target="_blank" class="button button-secondary project-link">View on GitHub</a>
+                </div>
+            </div>
+
+            <div class="project-item">
+                <!-- IMPORTANT: Save photo as 'project-5.jpg' -->
+                <img src="project-5.jpg" alt="Arithmetic Formatter Screenshot" class="project-image">
+                <div class="project-details">
+                    <h3>Arithmetic Formatter</h3>
+                    <p>A console application that arranges arithmetic problems vertically (like primary school math). It dynamically parses strings and handles error checking for invalid inputs.</p>
+                    <div class="tech-tags">
+                        <span>Python</span>
+                        <span>String Parsing</span>
+                        <span>Error Handling</span>
+                    </div>
+                    <a href="https://github.com/natnaeltassew/Arithmetic-formatter" target="_blank" class="button button-secondary project-link">View on GitHub</a>
+                </div>
+            </div>
+            
+        </section>
+
+        <!-- Page 5: Skills -->
+        <section id="skills" class="container">
+            <h2>Technical & Soft Skills</h2>
+            <div class="skill-grid">
+                <div class="skill-group">
+                    <h3>Technical Skills</h3>
+                    <ul class="skill-list">
+                        <li>Python (Intermediate)</li>
+                        
+                        <li>HTML5/CSS3</li>
+                        <li>Git / GitHub</li>
+                        <li>Linux CLI</li>
+                        <li>VS Code</li>
+                    </ul>
+                </div>
+                <div class="skill-group">
+                    <h3>Soft Skills</h3>
+                    <ul class="skill-list">
+                        <li>Cross-Cultural Teamwork</li>
+                        <li>Complex Problem Solving</li>
+                        <li>Analytical Thinking</li>
+                        <li>Time Management</li>
+                        <li>Technical Writing</li>
+                        <li>Mentorship & Teaching</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Page 6: Contact -->
+        <section id="contact" class="container">
+            <h2>Get In Touch</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">I am available and eager to discuss my application and future goals.</p>
+            <div class="contact-grid">
+                
+                <div class="contact-card">
+                    <h4>Email</h4>
+                    <a href="mailto:work62582@gmail.com">work62582@gmail.com</a>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>Telegram</h4>
+                    <a href="https://t.me/natiy212" target="_blank">@natiy212</a>
+                </div>
+                
+                <div class="contact-card">
+                    <h4>GitHub</h4>
+                    <a href="https://github.com/natnaeltassew" target="_blank">github.com/natnaeltassew</a>
+                </div>
+                
+                
+                
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            &copy; 2026 Natnael Tassew. portfolio
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for smooth scrolling and responsive menu handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuButton = document.getElementById('menuButton');
+            const navLinks = document.getElementById('navLinks');
+            const header = document.querySelector('header');
+            const navHeight = header.offsetHeight; // Get height of sticky header
+
+            // 1. Mobile Menu Toggle
+            menuButton.addEventListener('click', () => {
+                const isOpen = navLinks.classList.toggle('open');
+                // Calculate and set the height dynamically for smooth slide transition
+                if (isOpen) {
+                    navLinks.style.height = navLinks.scrollHeight + "px";
+                } else {
+                    navLinks.style.height = "0";
+                }
+            });
+
+            // 2. Smooth Scrolling for Navigation Links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // Close the mobile menu if open
+                        if (navLinks.classList.contains('open')) {
+                            navLinks.classList.remove('open');
+                            navLinks.style.height = "0";
+                        }
+
+                        // Use scrollIntoView with smooth behavior (modern way)
+                        // Fallback: manually calculate and scroll for sticky header compensation
+                        if (typeof targetElement.scrollIntoView === 'function' && targetElement.scrollIntoView({ behavior: 'smooth' }) === undefined) {
+                            // If smooth scroll is supported, rely on that.
+                            return;
+                        }
+
+                        // Manual scroll calculation for older browsers or if preferred
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - navHeight;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+
+            // Set initial height of mobile menu to 0
+            if (window.innerWidth <= 768) {
+                 navLinks.style.height = "0";
+            }
+        });
+    </script>
+</body>
+</html>
